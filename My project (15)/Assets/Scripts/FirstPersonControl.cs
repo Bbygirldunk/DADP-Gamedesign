@@ -133,7 +133,7 @@ private void OnEnable()
     {
         if (characterController.isGrounded)
         {
-            velocity.y =Mathf.Sqrt(jumpHeight * 2f * gravity);
+            velocity.y =Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
       
     }
