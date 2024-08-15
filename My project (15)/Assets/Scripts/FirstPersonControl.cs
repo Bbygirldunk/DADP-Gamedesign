@@ -39,13 +39,19 @@ public class FirstPersonControl : MonoBehaviour
     private GameObject heldObject;
 
 
-    [Header("SPRINTING SETTINGS")]
+   [Header("SPRINTING SETTINGS")]
     [Space(5)]
     public float sprintSpeed;
     public float walkSpeed;
     private float currentSpeed;
-  
-   
+
+    [Header("CROUCH SETTINGS")]
+    [Space(5)]
+    public float crouchHeight = 1.0f;
+    public float standingHeight = 2.0f;
+    public float crouchSpeed = 2.0f;
+
+    
 
     private void Awake()
     {
@@ -72,10 +78,37 @@ private void OnEnable()
         playerInput.Player.PickUp.performed += ctx => PickUpObject();
 
         playerInput.Player.Sprint.performed += ctx => Sprint();
-   
+        playerInput.Player.Crouch.performed += ctx => ToggleCrouch();
+
+    }
+
+    private bool isCrouching = false;
+
+
+    public void ToggleCrouch()
+    {
+        isCrouching = !isCrouching;
+
+        if (isCrouching)
+        {
+            characterController.height = crouchHeight;
+            moveSpeed /= crouchSpeed; // Decrease move speed when crouching
+        }
+        else
+        {
+            characterController.height = standingHeight;
+            moveSpeed *= crouchSpeed; // Reset move speed to normal when standing
+        }
+
+        // Adjust the camera position relative to the new height
+        Vector3 cameraPosition = playerCamera.localPosition;
+        cameraPosition.y = characterController.height / 2f;
+        playerCamera.localPosition = cameraPosition;
+       
 }
 
-    public void Sprint()
+
+public void Sprint()
     {
 
         
@@ -141,7 +174,7 @@ private void OnEnable()
 
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             rb.velocity = firePoint.forward * projectileSpeed;
-            Destroy(projectile, 3f);
+            Destroy(projectile, 1f);
             Debug.Log("jjjjjjjjjjjjjj");
         }
 
