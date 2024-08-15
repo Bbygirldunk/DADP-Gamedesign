@@ -24,7 +24,7 @@ public class FirstPersonControl : MonoBehaviour
 
     private CharacterController characterController;
 
-    [Header("SHHOTING SETTINGS")]
+    [Header("SHOOTING SETTINGS")]
     [Space(5)]
     public GameObject projectilePrefab;
     public Transform firePoint;
@@ -37,6 +37,13 @@ public class FirstPersonControl : MonoBehaviour
     [Space(5)]
     public Transform holdPosition;
     private GameObject heldObject;
+
+
+    [Header("SPRINTING SETTINGS")]
+    [Space(5)]
+    public float walkSpeed;
+    public float sprintSpeed;
+  
    
 
     private void Awake()
@@ -175,3 +182,4 @@ private void OnEnable()
 
     }
 }
+ 
