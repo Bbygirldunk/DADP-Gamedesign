@@ -356,7 +356,7 @@ MonoBehaviour:
   lookSpeed: 4
   Player: {fileID: 470362736}
   gravity: -9.81
-  jumpHeight: 5
+  jumpHeight: 1.5
   playerCamera: {fileID: 1743308375}
   projectilePrefab: {fileID: 2787014848892512432, guid: c42560bd98b6a9f47b120ccbfd50fee4,
     type: 3}
@@ -364,8 +364,8 @@ MonoBehaviour:
   projectileSpeed: 20
   pickUpRange: 3
   holdPosition: {fileID: 1932634198}
-  walkSpeed: 5
   sprintSpeed: 7
+  walkSpeed: 4
 --- !u!1 &1069950831
 GameObject:
   m_ObjectHideFlags: 0

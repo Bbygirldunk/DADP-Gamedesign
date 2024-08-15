@@ -41,8 +41,9 @@ public class FirstPersonControl : MonoBehaviour
 
     [Header("SPRINTING SETTINGS")]
     [Space(5)]
-    public float walkSpeed;
     public float sprintSpeed;
+    public float walkSpeed;
+    private float currentSpeed;
   
    
 
@@ -69,8 +70,24 @@ private void OnEnable()
 
         playerInput.Player.Shoot.performed += ctx => Shoot();
         playerInput.Player.PickUp.performed += ctx => PickUpObject();
+
+        playerInput.Player.Sprint.performed += ctx => Sprint();
    
 }
+
+    public void Sprint()
+    {
+
+        // Check if the Shift key is pressed
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            currentSpeed = sprintSpeed;
+        }
+        else
+        {
+            currentSpeed = walkSpeed;
+        }
+    }
 
     public void PickUpObject()
     {
