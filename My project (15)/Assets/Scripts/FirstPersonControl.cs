@@ -78,7 +78,7 @@ private void OnEnable()
     public void Sprint()
     {
 
-        // Check if the Shift key is pressed
+        
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
             currentSpeed = sprintSpeed;
@@ -105,7 +105,7 @@ private void OnEnable()
 
         if (Physics.Raycast(ray, out hit, pickUpRange))
         {
-            if (hit.collider.CompareTag("PickUp'"))
+            if (hit.collider.CompareTag("PickUp"))
             {
                 heldObject = hit.collider.gameObject;
                 heldObject.GetComponent<Rigidbody>().isKinematic = true;
@@ -116,7 +116,7 @@ private void OnEnable()
                 heldObject.transform.parent = holdPosition;
 
             }
-            else if (hit.collider.CompareTag("Gun"))
+            if (hit.collider.CompareTag("Gun"))
             {
                 heldObject = hit.collider.gameObject;
                 heldObject.GetComponent<Rigidbody>().isKinematic = true;
@@ -142,6 +142,7 @@ private void OnEnable()
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             rb.velocity = firePoint.forward * projectileSpeed;
             Destroy(projectile, 3f);
+            Debug.Log("jjjjjjjjjjjjjj");
         }
 
     }
@@ -185,7 +186,9 @@ private void OnEnable()
         transform.Rotate(0, LookX, 0);
 
         verticalLookRotation -= LookY;
-        verticalLookRotation = Mathf.Clamp(verticalLookRotation, 0, 0);
+        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -90, 90);
+
+        playerCamera.localEulerAngles = new Vector3(verticalLookRotation, 0, 0);
     }
     public void ApplyGravity()
     {
