@@ -39,19 +39,12 @@ public class FirstPersonControl : MonoBehaviour
     private GameObject heldObject;
 
 
-   [Header("SPRINTING SETTINGS")]
-    [Space(5)]
-    public float sprintSpeed;
-    public float walkSpeed;
-    private float currentSpeed;
-
     [Header("CROUCH SETTINGS")]
     [Space(5)]
     public float crouchHeight = 1.0f;
     public float standingHeight = 2.0f;
     public float crouchSpeed = 2.0f;
 
-    
 
     private void Awake()
     {
@@ -77,7 +70,7 @@ private void OnEnable()
         playerInput.Player.Shoot.performed += ctx => Shoot();
         playerInput.Player.PickUp.performed += ctx => PickUpObject();
 
-        playerInput.Player.Sprint.performed += ctx => Sprint();
+        
         playerInput.Player.Crouch.performed += ctx => ToggleCrouch();
 
     }
@@ -106,21 +99,6 @@ private void OnEnable()
         playerCamera.localPosition = cameraPosition;
        
 }
-
-
-public void Sprint()
-    {
-
-        
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-        {
-            currentSpeed = sprintSpeed;
-        }
-        else
-        {
-            currentSpeed = walkSpeed;
-        }
-    }
 
     public void PickUpObject()
     {
