@@ -1,33 +1,44 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
-    public float maxHealth = 100f;
-    private float currentHealth;
+    public float moveSpeed = 2.0f; // Speed of the enemy
+    public float damageAmount = 20f; // Amount of damage the enemy deals to the player
+    public float chaseRange = 10f; // Range within which the enemy starts chasing the player
 
-    private void Start()
+    private Transform player;
+
+    void Start()
     {
-        currentHealth = maxHealth;
+        player = GameObject.FindGameObjectWithTag("Player").transform; // Find the player by tag
     }
 
-    public void TakeDamage(float damageAmount)
+    void Update()
     {
-        currentHealth -= damageAmount;
-        Debug.Log("Enemy Health: " + currentHealth);
+        // Check the distance between the enemy and the player
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (currentHealth <= 0)
+        // If the player is within the chase range, move towards the player
+        if (distanceToPlayer <= chaseRange)
         {
-            Die();
+            MoveTowardsPlayer();
         }
     }
 
-    private void Die()
+    private void MoveTowardsPlayer()
     {
-        // Handle enemy death (e.g., play animation, destroy the game object)
-        Debug.Log("Enemy Died");
-        Destroy(gameObject);
+        Vector3 direction = (player.position - transform.position).normalized;
+        transform.position += direction * moveSpeed * Time.deltaTime;
+
+        // Optionally, make the enemy face the player
+        transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+    }
+
+    internal void TakeDamage(float damage)
+    {
+        throw new NotImplementedException();
     }
 }
-
