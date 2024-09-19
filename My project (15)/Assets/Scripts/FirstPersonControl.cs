@@ -45,6 +45,11 @@ public class FirstPersonControl : MonoBehaviour
     public float standingHeight = 2.0f;
     public float crouchSpeed = 2.0f;
 
+    [Header("INTERACT SETTINGS")]
+    [Space(5)]
+    public Material switchMaterial;
+    public GameObject[] objectsToChangeColor;
+
 
     private void Awake()
     {
@@ -73,11 +78,54 @@ private void OnEnable()
         
         playerInput.Player.Crouch.performed += ctx => ToggleCrouch();
 
+        playerInput.Player.Interact.performed += ctx => Interact();
+
     }
 
     private bool isCrouching = false;
 
 
+
+    public void Interact()
+    {
+        Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, pickUpRange))
+        {
+            if (hit.collider.CompareTag("Switch"))
+
+            {
+                foreach (GameObject obj in objectsToChangeColor)
+                {
+                    Renderer renderer = obj.GetComponent<Renderer>();
+                    if (renderer != null)
+                    {
+                        renderer.material.color = switchMaterial.color;
+                    }
+                }
+            }
+        }
+
+        else if (hit.collider.CompareTag("Door"))
+        {
+            StartCoroutine(RaiseDoor(hit.collider.gameObject));
+        }
+    }
+
+    private IEnumerator RaiseDoor(GameObject door)
+    {
+        float raiseAmount = 5f;
+        float raiseSpeed = 2f;
+        Vector3 startPosition = door.transform.position;
+        Vector3 endPosition = startPosition + Vector3.up * raiseAmount;
+
+        while (door.transform.position.y < endPosition.y)
+        {
+            door.transform.position = Vector3.MoveTowards(door.transform.position, endPosition, raiseSpeed * Time.deltaTime);
+            yield return null;
+        }
+    }
     public void ToggleCrouch()
     {
         isCrouching = !isCrouching;

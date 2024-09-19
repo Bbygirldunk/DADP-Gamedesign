@@ -45,7 +45,23 @@ public class Timer : MonoBehaviour
         // Example: GetComponent<PlayerController>().enabled = false;
 
         Debug.Log("Game Over!");
+
+        // Exit the game
+        QuitGame();
+    }
+
+    private void QuitGame()
+    {
+        // Check if the game is running in the Unity editor or a built version
+#if UNITY_EDITOR
+        // Stop the game in the editor
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        // Quit the game in the built version
+        Application.Quit();
+#endif
     }
 }
+
 
 

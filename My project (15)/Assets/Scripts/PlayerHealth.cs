@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public float maxHealth = 100f;
+    public float maxHealth = 10f;
     private float currentHealth;
 
-    public Transform respawnPoint; // The position where the player will respawn
+    public GameObject respawnPoint;  // The position where the player will respawn
+    public GameObject Player;
+    private bool isDead = false;    // To prevent multiple respawn calls
 
     void Start()
     {
@@ -16,25 +19,38 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        currentHealth -= damageAmount;
-        Debug.Log("Player Health: " + currentHealth);
-
-        if (currentHealth <= 0)
+        if (!isDead)
         {
-            Die();
+            currentHealth -= damageAmount;
+            Debug.Log("Player Health: " + currentHealth);
+
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
         }
     }
 
     private void Die()
     {
         Debug.Log("Player Died");
-        Respawn(); // Respawn the player
+        isDead = true;
+        StartCoroutine(RestartGame());
+        //Respawn();  // Respawn the player
     }
-
-    private void Respawn()
+    
+    private IEnumerator RestartGame()
     {
-        transform.position = respawnPoint.position; // Move the player to the respawn point
-        currentHealth = maxHealth; // Reset health to max
-        Debug.Log("Player Respawned");
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
+
+  /*  private void Respawn()
+    {
+        Player.transform.position = respawnPoint.transform.position;  // Move the player to the respawn point
+        currentHealth = maxHealth;  // Reset health to max
+        isDead = false;  // Allow damage again
+        Debug.Log("Player Respawned");
+    }
+}*/
